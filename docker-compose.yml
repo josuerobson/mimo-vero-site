@@ -8,11 +8,11 @@ services:
     ports:
       - "8080:80"
     environment:
-      - DB_HOST=db
-      - DB_NAME=suanet_site
-      - DB_USER=suanet
-      - DB_PASS=${DB_PASS:-SuaNet@2024!}
-      - DB_PORT=3306
+      DB_HOST: db
+      DB_NAME: suanet_site
+      DB_USER: suanet
+      DB_PASS: SuaNet2024
+      DB_PORT: "3306"
     volumes:
       - .:/var/www/html
     depends_on:
@@ -26,15 +26,15 @@ services:
     container_name: suanet-db
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS:-root2024!}
-      - MYSQL_DATABASE=suanet_site
-      - MYSQL_USER=suanet
-      - MYSQL_PASSWORD=${DB_PASS:-SuaNet@2024!}
+      MYSQL_ROOT_PASSWORD: root2024
+      MYSQL_DATABASE: suanet_site
+      MYSQL_USER: suanet
+      MYSQL_PASSWORD: SuaNet2024
     volumes:
       - db_data:/var/lib/mysql
       - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
     healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot2024"]
       interval: 10s
       timeout: 5s
       retries: 5
